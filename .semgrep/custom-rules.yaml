@@ -1,0 +1,18 @@
+rules:
+  - id: detect-hardcoded-credentials
+    pattern-either:
+      # Ищет присвоение строк переменным с "подозрительными" именами
+      - pattern: |
+          let $VAR = "..."
+      - pattern: |
+          var $VAR = "..."
+      - pattern: |
+          static let $VAR = "..."
+    metavariable-regex:
+      metavariable: $VAR
+      regex: (?i)(password|passwd|pwd|secret|token|api[_-]?key|db[_-]?password)
+    message: |
+      Hardcoded credential detected. Never store secrets in source code.
+      Use environment variables or a secure vault.
+    languages: [swift]
+    severity: ERROR

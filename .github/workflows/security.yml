@@ -17,27 +17,20 @@ jobs:
       actions: read
     container:
       image: returntocorp/semgrep
-      volumes:
-        - ${{ github.workspace }}:/src
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Semgrep with local rules
+      - name: Run Semgrep with custom rule
         id: semgrep_scan
-        working-directory: /src
         run: |
           semgrep scan \
-            --config=auto \
-            --config=/src/semgrep-rules/swift \
-            --config=/src/semgrep-rules/secrets \
-            --config=/src/semgrep-rules/owasp-top-ten \
-            --exclude /src/semgrep-rules \
+            --config=.semgrep/custom-rules.yaml \
             --error \
-            --sarif > /src/semgrep.sarif
+            --sarif > semgrep.sarif
           
           echo "=== SEMGREP FINDINGS ==="
-          cat /src/semgrep.sarif | grep -A 5 '"level"' || echo "No findings or SARIF empty"
+          cat semgrep.sarif | grep -A 5 '"level"' || echo "No findings or SARIF empty"
           echo "=== END ==="
 
       - name: Upload SARIF as artifact
@@ -45,13 +38,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: semgrep-results
-          path: /src/semgrep.sarif
+          path: semgrep.sarif
 
       - name: Upload SARIF to GitHub Security Dashboard
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: /src/semgrep.sarif
+          sarif_file: semgrep.sarif
 
   codeql:
     name: CodeQL Analysis
