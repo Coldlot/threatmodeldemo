@@ -52,7 +52,7 @@ jobs:
           xcodebuild -project ThreatModelDemo.xcodeproj \
             -scheme ThreatModelDemo \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=Any iOS Simulator Device' \
+            -destination 'platform=iOS Simulator,id=$(xcrun simctl list devices available iPhone | grep -m 1 -o "([0-9A-F-]\+)" | tr -d "()")' \
             build
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
