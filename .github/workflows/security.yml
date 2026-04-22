@@ -20,6 +20,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Run Semgrep
         id: semgrep_scan
         run: |
@@ -30,7 +31,19 @@ jobs:
             --config=p/secrets \
             --error \
             --sarif > semgrep.sarif
-      - name: Upload SARIF to GitHub
+          
+          echo "=== SEMGREP FINDINGS ==="
+          cat semgrep.sarif | grep -A 5 '"level"' || echo "No findings or SARIF empty"
+          echo "=== END ==="
+
+      - name: Upload SARIF as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-results
+          path: semgrep.sarif
+
+      - name: Upload SARIF to GitHub Security Dashboard
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
