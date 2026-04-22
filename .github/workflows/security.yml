@@ -26,6 +26,7 @@ jobs:
             --config=auto \
             --config=p/swift \
             --config=p/ios \
+            --config=p/secrets \
             --sarif > semgrep.sarif
         continue-on-error: true
       - name: Upload SARIF to GitHub
