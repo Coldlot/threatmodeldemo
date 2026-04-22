@@ -49,10 +49,11 @@ jobs:
           languages: swift
       - name: Build Swift project
         run: |
-          xcodebuild -project ThreatModelDemo.xcodeproj \
+          xcodebuild build \
+            -project ThreatModelDemo.xcodeproj \
             -scheme ThreatModelDemo \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator' \
-            build
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
