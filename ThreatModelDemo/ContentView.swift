@@ -5,6 +5,9 @@ struct ContentView: View {
     @State private var token: String = ""
     @State private var message: String = ""
     @State private var isJailbroken: String = "?"
+    private let apiKey = "sk_live_abc123def456ghi789jkl"
+    private let tokenAPI = "21312321312414241231232131"
+    private let password = "password123"
     
     var body: some View {
         VStack(spacing: 20) {
