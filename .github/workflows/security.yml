@@ -21,15 +21,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Semgrep
+      - name: Run Semgrep with local rules
         id: semgrep_scan
         run: |
           semgrep scan \
             --config=auto \
-            --config=p/swift \
-            --config=p/mobile \
-            --config=p/secrets \
-            --config=p/supply-chain \
+            --config=semgrep-rules/swift \
+            --config=semgrep-rules/secrets \
+            --config=semgrep-rules/owasp-top-ten \
+            --exclude semgrep-rules \
             --error \
             --sarif > semgrep.sarif
           
