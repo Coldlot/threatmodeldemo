@@ -27,8 +27,9 @@ jobs:
           semgrep scan \
             --config=auto \
             --config=p/swift \
-            --config=p/ios \
+            --config=p/mobile \
             --config=p/secrets \
+            --config=p/supply-chain \
             --error \
             --sarif > semgrep.sarif
           
